@@ -2,7 +2,6 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ImageBackground,
   PermissionsAndroid
 } from 'react-native';
@@ -16,38 +15,8 @@ import Geolocation from 'react-native-geolocation-service';
 import { Background, InputText, Location, Button } from '../../components';
 import { NavigationService } from '../../util';
 import { Navigation } from '../../configs';
+import { LoginStyle } from '../../styles';
 import Images from '../../assets/images';
-import Theme from '../../styles/Theme';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 50,
-    fontFamily: Theme.fontBold,
-    marginBottom: 16,
-    marginTop: 50,
-    textAlign: 'center',
-    color: 'white'
-  },
-  box: {
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    paddingVertical: 32,
-    borderRadius: 8,
-    padding: 16
-  },
-  text: {
-    color: Theme.txtSecondaryColor,
-    marginBottom: 5
-  },
-  txtColor: {
-    color: Theme.buttonColor,
-    fontFamily: Theme.fontBold
-  }
-})
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -59,7 +28,7 @@ export default class Login extends React.Component {
     }
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this._requestLocationPermission();
   }
 
@@ -139,17 +108,18 @@ export default class Login extends React.Component {
   };
 
   render() {
+    const { location } = this.state;
     return (
       <ImageBackground source={Images.bgLogin} style={{ flex: 1 }}>
-        <Background transparent style={styles.container}>
-          <Text style={styles.title}>Login</Text>
-          <View style={styles.box}>
+        <Background transparent style={LoginStyle.container}>
+          <Text style={LoginStyle.title}>Login</Text>
+          <View style={LoginStyle.box}>
             <InputText title="Email" onChange={email => this.setState({ email })} />
             <InputText title="Password" />
           </View>
           <Button title="Login" />
-          <Text style={[styles.text, { textAlign: 'center' }]}>Belum memiliki akun? <Text style={styles.txtColor} onPress={() => NavigationService.navigate(Navigation.REGISTER, { location })}>Register</Text></Text>
-          <Location data={this.state.location} />
+          <Text style={[LoginStyle.text, { textAlign: 'center' }]}>Belum memiliki akun? <Text style={LoginStyle.txtColor} onPress={() => NavigationService.navigate(Navigation.REGISTER, { location })}>Register</Text></Text>
+          <Location data={location} />
         </Background>
       </ImageBackground>
     );

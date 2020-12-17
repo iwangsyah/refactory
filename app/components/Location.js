@@ -3,22 +3,27 @@ import { StyleSheet, View, Text } from 'react-native';
 import Theme from '../styles/Theme';
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    position: 'absolute',
+    paddingHorizontal: 20,
+    bottom: 20
+  },
   location: {
-    fontSize: 18,
     marginTop: 20,
-    marginBottom: 10,
     color: Theme.txtSecondaryColor,
   },
   text: {
+    fontSize: 10,
+    marginBottom: 5,
     color: Theme.txtSecondaryColor,
-    marginBottom: 5
   }
 })
 
 export default (Location = ({
   data
 }) => (
-  <View style={{ marginTop: 50 }}>
+  <View style={styles.container}>
     <Text style={styles.location}>Posisi saat ini:</Text>
     <View style={{ marginLeft: 16 }}>
       <View style={{ flexDirection: 'row' }}>

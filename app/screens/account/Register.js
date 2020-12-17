@@ -2,45 +2,21 @@ import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
+  Image,
   ImageBackground,
   TouchableOpacity
 } from 'react-native';
+import {
+  Background,
+  ModalFoto,
+  InputText,
+  Location,
+  Button
+} from '../../components';
 import Images from '../../assets/images';
-import Theme from '../../styles/Theme';
 import { Navigation } from '../../configs';
 import { NavigationService } from '../../util';
-import { Background, InputText, Location, Button } from '../../components';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 50,
-    fontFamily: Theme.fontBold,
-    marginBottom: 16,
-    marginTop: 50,
-    textAlign: 'center',
-    color: 'white'
-  },
-  box: {
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    paddingVertical: 32,
-    borderRadius: 8,
-    padding: 16
-  },
-  text: {
-    color: Theme.txtSecondaryColor,
-    marginBottom: 5
-  },
-  txtColor: {
-    color: Theme.buttonColor,
-    fontFamily: Theme.fontBold
-  }
-})
+import { Theme, LoginStyle } from '../../styles';
 
 export default class Register extends React.Component {
   constructor(props) {
@@ -49,32 +25,79 @@ export default class Register extends React.Component {
       email: '',
       username: '',
       password: '',
+      imageUri: '',
+      isVisible: false,
       location: props.navigation.state.params.location
     }
   }
 
-  renderFoto = () => (
-    <View style={{ flexDirection: 'row' }}>
-      <Text style={[styles.text, { marginRight: 10 }]}>Foto Profile</Text>
-      <TouchableOpacity style={{ width: 60, height: 60, backgroundColor: Theme.bgPrimaryColor, borderRadius: 5 }} />
-    </View>
-  )
+  _onShowModal = (isVisible) => {
+    this.setState({ isVisible })
+  }
+
+  _onChangeFoto = (imageUri) => {
+    this.setState({ imageUri })
+  }
+
+  renderFoto = () => {
+    const { imageUri } = this.state;
+    let content;
+    if (imageUri) {
+      content = (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image
+            source={{ isStatic: true, uri: imageUri }}
+            style={LoginStyle.imagePreview}
+          />
+          <TouchableOpacity style={LoginStyle.buttonDelete} onPress={() => this._onChangeFoto('')}>
+            <Text style={LoginStyle.text}>Hapus Foto</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    } else {
+      content = (
+        <TouchableOpacity
+          style={LoginStyle.iconContainer}
+          onPress={() => this._onShowModal(true)}
+        >
+          <Image
+            source={Images.icCamera}
+            style={LoginStyle.image} />
+        </TouchableOpacity>
+      )
+    }
+
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <Text style={[LoginStyle.text, { marginRight: 10 }]}>
+          Foto Profile
+      </Text>
+        {content}
+      </View>
+    )
+  }
 
   render() {
+    const { isVisible, location } = this.state;
     return (
       <ImageBackground source={Images.bgLogin} style={{ flex: 1 }}>
-        <Background transparent style={styles.container}>
-          <Text style={styles.title}>Register</Text>
-          <View style={styles.box}>
+        <Background transparent style={LoginStyle.container}>
+          <Text style={LoginStyle.title}>Register</Text>
+          <View style={LoginStyle.box}>
             <InputText title="Username" onChange={username => this.setState({ username })} />
             {this.renderFoto()}
             <InputText title="Email" onChange={email => this.setState({ email })} />
             <InputText title="Password" onChange={password => this.setState({ password })} />
           </View>
-          <Button title="Register" location={this.state.location} />
-          <Text style={[styles.text, { textAlign: 'center' }]}>Sudah memiliki akun? <Text style={styles.txtColor} onPress={() => NavigationService.navigate(Navigation.LOGIN)}>Login</Text></Text>
-          <Location data={this.state.location} />
+          <Button title="Register" />
+          <Text style={[LoginStyle.text, { textAlign: 'center' }]}>Sudah memiliki akun? <Text style={LoginStyle.txtColor} onPress={() => NavigationService.navigate(Navigation.LOGIN)}>Login</Text></Text>
+          <Location data={location} />
         </Background>
+        <ModalFoto
+          visible={isVisible}
+          onClose={() => this._onShowModal(false)}
+          onSelectedItem={(imageUri) => this._onChangeFoto(imageUri)}
+        />
       </ImageBackground>
     );
   }

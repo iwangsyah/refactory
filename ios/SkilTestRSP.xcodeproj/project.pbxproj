@@ -20,6 +20,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* SkilTestRSPTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SkilTestRSPTests.m */; };
 		47A3F8B9258A8551009AA142 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A3F8B8258A8551009AA142 /* File.swift */; };
 		47A3F8BF258AB53C009AA142 /* ic_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 47A3F8BE258AB22B009AA142 /* ic_logo.png */; };
+		47A3F8CE258BC0B8009AA142 /* QBImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47A3F8CD258BC0B8009AA142 /* QBImagePicker.storyboard */; };
 		67A6FFE2DC6F4640A87C91FC /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47DB2F7DEE114A55B5713E92 /* Montserrat-Regular.ttf */; };
 		C0C38AD5EF0E4ECCB1D99D9A /* Montserrat-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8DBD16CECE74E12BF3C7B90 /* Montserrat-Medium.ttf */; };
 		CD5CE0A93DF44C13852F8D15 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 29F0C6A379004EA9BE8B95F9 /* Montserrat-Bold.ttf */; };
@@ -73,6 +74,7 @@
 		47A3F8B5258A8530009AA142 /* SkilTestRSP-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SkilTestRSP-Bridging-Header.h"; sourceTree = "<group>"; };
 		47A3F8B8258A8551009AA142 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		47A3F8BE258AB22B009AA142 /* ic_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_logo.png; path = ../app/assets/images/icons/ic_logo.png; sourceTree = "<group>"; };
+		47A3F8CD258BC0B8009AA142 /* QBImagePicker.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = QBImagePicker.storyboard; path = "../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePicker/QBImagePicker.storyboard"; sourceTree = "<group>"; };
 		47DB2F7DEE114A55B5713E92 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../app/assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		6CCDD104FDBA4161BD4FFAB2 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		72C4E3D44B17D8239C259F31 /* Pods-SkilTestRSP-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SkilTestRSP-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-SkilTestRSP-tvOSTests/Pods-SkilTestRSP-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				47A3F8CD258BC0B8009AA142 /* QBImagePicker.storyboard */,
 				13B07FAE1A68108700A75B9A /* SkilTestRSP */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SkilTestRSPTests */,
@@ -400,6 +403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47A3F8CE258BC0B8009AA142 /* QBImagePicker.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				47A3F8BF258AB53C009AA142 /* ic_logo.png in Resources */,
