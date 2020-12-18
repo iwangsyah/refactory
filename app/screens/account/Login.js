@@ -132,6 +132,7 @@ export class Login extends React.Component {
         setUserLogin(user)
         setLoginStory(loginStory);
         alert(`anda telah login menggunakan\nusername : ${email}\nsebanyak ${count} kali`);
+        NavigationService.navigate(Navigation.APP)
       } else if (dataExist) {
         alert('Password salah');
         this.setState({ password: '' });
