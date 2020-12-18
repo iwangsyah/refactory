@@ -4,7 +4,6 @@ import Theme from './Theme';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
   },
   row: {
     flexDirection: 'row',

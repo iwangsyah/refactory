@@ -113,7 +113,7 @@ export class Register extends React.Component {
 
     return (
       <ImageBackground source={Images.bgLogin} style={{ flex: 1 }}>
-        <Background transparent style={LoginStyle.container}>
+        <Background transparent style={[LoginStyle.container, { paddingHorizontal: 16 }]}>
           <Text style={LoginStyle.title}>Register</Text>
           <View style={LoginStyle.box}>
             <InputText

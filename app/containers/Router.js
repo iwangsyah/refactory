@@ -34,7 +34,8 @@ const HomeNavigation = createStackNavigator(
 
 const CourseNavigation = createStackNavigator(
   {
-    [Navigation.COURSE]: Screen.Home,
+    [Navigation.COURSE]: Screen.Course,
+    [Navigation.COURSEDETAIL]: Screen.CourseDetail,
   },
   {
     headerMode: Navigation.COURSE,
@@ -146,7 +147,7 @@ const BottomNavigationHome = createBottomTabNavigator(
                   ? Theme.primaryColor
                   : Theme.lineColor,
               }}>
-              Course
+              Courses
             </Text>
           </Ripple>
           <Ripple

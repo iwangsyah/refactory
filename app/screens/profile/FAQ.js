@@ -113,7 +113,7 @@ export default class FAQ extends React.Component {
     };
   }
 
-  renderItem = ({ item }) => {
+  _renderItem = ({ item }) => {
     const active = item.id === this.state.selectedId;
     return (
       <TouchableOpacity
@@ -176,7 +176,7 @@ export default class FAQ extends React.Component {
                 paddingHorizontal: 20,
                 paddingVertical: 8,
               }}
-              renderItem={this.renderItem}
+              renderItem={this._renderItem}
             />
           </View>
         </View>

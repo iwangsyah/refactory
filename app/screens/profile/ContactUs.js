@@ -4,9 +4,11 @@ import {
   StyleSheet,
   Dimensions,
   Linking,
+  Image,
   Text,
   View,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Images from '../../assets/images';
 import { Theme } from '../../styles';
 
@@ -25,6 +27,12 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     marginBottom: 16,
     fontFamily: Theme.fontRegular
+  },
+  whatsapp: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 });
 
@@ -55,32 +63,28 @@ export default class ContactUs extends React.Component {
             <Text style={styles.text}>
               {`Dewita: 0857 2582 7222\nSeptin: 0878 2080 0206`}
             </Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: 12,
-              }}>
-              <Text size="xmini" family="regular">
-                Whatsapp Number
-                </Text>
-              <Text
-                style={styles.text}
+            <View style={styles.whatsapp}>
+              <View>
+                <Text style={styles.title}>Whatsapp Number</Text>
+                <Text style={styles.text}>0877-7898-8998</Text>
+              </View>
+              <TouchableOpacity
                 onPress={() =>
-                  Linking.openURL('https://wa.me/087778988998').catch((err) =>
+                  Linking.openURL('https://wa.me/081228203381').catch((err) =>
                     console.error('An error occurred', err),
                   )
-                }>
-                Chat Now
+                }
+                style={{ alignItems: 'center' }}
+              >
+                <Image source={Images.icWhatsapp} style={{ width: 50, height: 50 }} />
+                <Text style={{ fontFamily: Theme.fontMedium, color: Theme.primaryColor }}>
+                  Chat Now
                 </Text>
+              </TouchableOpacity>
             </View>
-            <Text style={styles.text}>
-              0877-7898-8998
-              </Text>
           </ScrollView>
         </View>
-      </View>
+      </View >
     );
   }
 }
