@@ -32,6 +32,25 @@ const HomeNavigation = createStackNavigator(
   },
 );
 
+const CourseNavigation = createStackNavigator(
+  {
+    [Navigation.COURSE]: Screen.Home,
+  },
+  {
+    headerMode: Navigation.COURSE,
+    defaultNavigationOptions: ({ navigation }) => ({
+      headerShown: false,
+      gestureEnabled: true,
+      gestureDirection: 'horizontal',
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    }),
+    navigationOptions: ({ navigation }) => ({
+      headerVisible: false,
+      tabBarVisible: navigation.state.index <= 0,
+    }),
+  },
+);
+
 const ProfileNavigation = createStackNavigator(
   {
     [Navigation.PROFILE]: Screen.Profile,
@@ -59,8 +78,8 @@ const BottomNavigationHome = createBottomTabNavigator(
     [Navigation.HOME]: {
       screen: HomeNavigation,
     },
-    [Navigation.HOME]: {
-      screen: HomeNavigation,
+    [Navigation.COURSE]: {
+      screen: CourseNavigation,
     },
     [Navigation.PROFILE]: {
       screen: ProfileNavigation,
@@ -108,7 +127,7 @@ const BottomNavigationHome = createBottomTabNavigator(
               justifyContent: 'center',
             }}
             rippleCentered
-            onPress={() => { }}>
+            onPress={() => NavigationService.navigate(Navigation.COURSE)}>
             <Image
               style={{
                 width: 25,

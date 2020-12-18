@@ -76,7 +76,6 @@ export class Profile extends React.Component {
 
   renderUser = () => {
     const { user } = this.props;
-    console.log('user: ', user);
     return (
       <View style={{ alignItems: 'center', marginVertical: 16 }}>
         <Image

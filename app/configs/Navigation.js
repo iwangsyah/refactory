@@ -6,6 +6,8 @@ export default Navigation = {
   REGISTER: 'Register',
   HOME: 'Home',
 
+  COURSE: 'Course',
+
   PROFILE: 'Profile',
   CONTACTUS: 'CONTACTUS',
   ABOUTUS: 'ABOUTUS',
