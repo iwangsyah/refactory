@@ -3,73 +3,31 @@ import { Astorage } from '../util';
 import { ActionTypes as types } from '../configs';
 
 export default class Actions {
-  static setPhoneNumber(phoneNumber) {
+  static setUserLogin = (user) => {
     return {
-      type: types.SET_PHONE_NUMBER,
-      phoneNumber
+      type: types.SET_USER_LOGIN,
+      user
     };
   }
 
-  static setPropertyName(propertyName) {
+  static setUserLocation = (location) => {
     return {
-      type: types.SET_PROPERTY_NAME,
-      propertyName
+      type: types.SET_USER_LOCATION,
+      location
     };
   }
 
-  static setAddress(address) {
+  static setLoginStory = (users) => {
     return {
-      type: types.SET_ADDRESS,
-      address
+      type: types.SET_LOGIN_STORY,
+      users
     };
   }
 
-  static setPayment(payment) {
+  static setRegisteredUsers = (users) => {
     return {
-      type: types.SET_PAYMENT,
-      payment
-    };
-  }
-
-  static setLantai(floors) {
-    return {
-      type: types.SET_LANTAI,
-      floors
-    };
-  }
-
-  static setRooms(rooms) {
-    return {
-      type: types.SET_ROOMS,
-      rooms
-    };
-  }
-
-  static setRoomTypeList(roomTypeList) {
-    return {
-      type: types.SET_ROOM_TYPE_LISTS,
-      roomTypeList
-    };
-  }
-
-  static setRoomStaffList(roomStaffList) {
-    return {
-      type: types.SET_ROOM_STAFF_LISTS,
-      roomStaffList
-    };
-  }
-
-  static getRoomTypeList(roomTypeList) {
-    return {
-      type: types.GET_ROOM_TYPE_LISTS,
-      roomTypeList
-    };
-  }
-
-  static logout() {
-    Astorage.removeAuthToken();
-    return {
-      type: types.LOGOUT
+      type: types.SET_REGISTERED_USERS,
+      users
     };
   }
 }

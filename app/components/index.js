@@ -5,5 +5,5 @@ export { default as Indicator } from './Indicator';
 export { default as InputText } from './InputText';
 export { default as Location } from './Location';
 export { default as ModalFoto } from './ModalFoto';
-export { default as Navbar } from './Navbar';
+export { default as NavBar } from './NavBar';
 

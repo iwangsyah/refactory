@@ -1,34 +1,50 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, Text } from 'react-native';
-import navbarStyle from '../styles/navbar';
+import { View, Text, Image, StatusBar, TouchableOpacity } from 'react-native';
+import StatusBarStyle from '../styles/StatusBar';
+import navbarStyle from '../styles/Navbar';
+import Images from '../assets/images';
+import { Theme } from '../styles';
 
-export default (NavBar = ({
-  title,
-  navIconVisible,
-  menuVisible,
-  shadowVisible,
-  onPress,
-  onPressMenu
-}) => (
-  <View
-    style={[navbarStyle.container, shadowVisible ? navbarStyle.shadow : {}]}
-  >
-    <TouchableOpacity 
-        disabled={!navIconVisible} 
-        style={navbarStyle.menu} 
-        onPress={onPress}
-    >
-    </TouchableOpacity>
-
-    <Text style={navbarStyle.title}>{title}</Text>
-
-    <TouchableOpacity
-        disabled={!menuVisible}
-        style={navbarStyle.menu}
-        onPress={onPressMenu}
-    >
-    
-    </TouchableOpacity>
-    
+export default NavBar = ({ title, onBack, bgText }) => (
+  <View>
+    <View
+      style={[
+        StatusBarStyle.container,
+        { backgroundColor: Theme.primaryColor },
+      ]}>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="dark-content"
+      />
+    </View>
+    <View style={navbarStyle.container}>
+      <TouchableOpacity
+        style={[
+          navbarStyle.containerBack,
+          {
+            display: onBack ? 'flex' : 'none',
+          },
+        ]}
+        onPress={() => onBack()}>
+        <Image
+          source={Images.icArrowLeft}
+          style={navbarStyle.icon}
+        />
+      </TouchableOpacity>
+      <View style={{ flex: 1 }} />
+    </View>
+    <Text
+      style={[
+        navbarStyle.title,
+        {
+          backgroundColor: bgText ? Theme.primaryColor : Theme.bgPrimaryColor,
+          color: bgText ? Theme.txtSecondaryColor : Theme.txtPrimaryColor,
+          paddingTop: title && onBack ? 2 : 12,
+          display: title ? 'flex' : 'none',
+        },
+      ]}>
+      {title}
+    </Text>
   </View>
-));
+);

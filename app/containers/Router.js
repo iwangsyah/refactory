@@ -20,7 +20,7 @@ const HomeNavigation = createStackNavigator(
   {
     headerMode: Navigation.HOME,
     defaultNavigationOptions: ({ navigation }) => ({
-      header: null,
+      headerShown: false,
       gestureEnabled: true,
       gestureDirection: 'horizontal',
       cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
@@ -32,11 +32,38 @@ const HomeNavigation = createStackNavigator(
   },
 );
 
+const ProfileNavigation = createStackNavigator(
+  {
+    [Navigation.PROFILE]: Screen.Profile,
+    [Navigation.FAQ]: Screen.FAQ,
+    [Navigation.ABOUTUS]: Screen.AboutUs,
+    [Navigation.CONTACTUS]: Screen.ContactUs,
+  },
+  {
+    headerMode: Navigation.PROFILE,
+    defaultNavigationOptions: ({ navigation }) => ({
+      headerShown: false,
+      gestureEnabled: true,
+      gestureDirection: 'horizontal',
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    }),
+    navigationOptions: ({ navigation }) => ({
+      headerVisible: false,
+      tabBarVisible: navigation.state.index <= 0,
+    }),
+  },
+);
 
 const BottomNavigationHome = createBottomTabNavigator(
   {
     [Navigation.HOME]: {
       screen: HomeNavigation,
+    },
+    [Navigation.HOME]: {
+      screen: HomeNavigation,
+    },
+    [Navigation.PROFILE]: {
+      screen: ProfileNavigation,
     },
   },
   {
@@ -59,10 +86,19 @@ const BottomNavigationHome = createBottomTabNavigator(
                 tintColor:
                   navigation.state.index == 0
                     ? Theme.primaryColor
-                    : Theme.teritaryColor,
+                    : Theme.lineColor,
               }}
               source={Images.icHome}
             />
+            <Text
+              style={{
+                fontFamily: Theme.fontBold,
+                color: navigation.state.index == 0
+                  ? Theme.primaryColor
+                  : Theme.lineColor,
+              }}>
+              Home
+            </Text>
           </Ripple>
           <Ripple
             style={{
@@ -80,10 +116,19 @@ const BottomNavigationHome = createBottomTabNavigator(
                 tintColor:
                   navigation.state.index == 1
                     ? Theme.primaryColor
-                    : Theme.teritaryColor,
+                    : Theme.lineColor,
               }}
-              source={Images.icHistory}
+              source={Images.icCourse}
             />
+            <Text
+              style={{
+                fontFamily: Theme.fontBold,
+                color: navigation.state.index == 1
+                  ? Theme.primaryColor
+                  : Theme.lineColor,
+              }}>
+              Course
+            </Text>
           </Ripple>
           <Ripple
             style={{
@@ -93,7 +138,7 @@ const BottomNavigationHome = createBottomTabNavigator(
               justifyContent: 'center',
             }}
             rippleCentered
-            onPress={() => { }}>
+            onPress={() => NavigationService.navigate(Navigation.PROFILE)}>
             <Image
               style={{
                 width: 25,
@@ -101,10 +146,19 @@ const BottomNavigationHome = createBottomTabNavigator(
                 tintColor:
                   navigation.state.index == 2
                     ? Theme.primaryColor
-                    : Theme.teritaryColor,
+                    : Theme.lineColor,
               }}
-              source={Images.icSetting}
+              source={Images.icProfile}
             />
+            <Text
+              style={{
+                fontFamily: Theme.fontBold,
+                color: navigation.state.index == 2
+                  ? Theme.primaryColor
+                  : Theme.lineColor,
+              }}>
+              Profile
+            </Text>
           </Ripple>
         </View>
       </SafeAreaView>
@@ -124,7 +178,8 @@ const BottomNavigationHome = createBottomTabNavigator(
 
 const AppStack = createStackNavigator(
   {
-    Home: BottomNavigationHome,
+    [Navigation.HOME]: BottomNavigationHome,
+    [Navigation.PROFILE]: ProfileNavigation
   },
   {
     headerMode: Navigation.HOME,
@@ -153,9 +208,9 @@ const AuthStack = createStackNavigator(
 
 const Routes = createSwitchNavigator(
   {
-    AuthLoading: Screen.AuthLoadingScreen,
-    Auth: AuthStack,
-    App: AppStack,
+    [Navigation.AUTHLOADING]: Screen.AuthLoadingScreen,
+    [Navigation.AUTH]: AuthStack,
+    [Navigation.APP]: AppStack,
   },
   {
     headerMode: 'none',

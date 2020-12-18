@@ -1,6 +1,13 @@
 export default Navigation = {
+  AUTHLOADING: 'AuthLoading',
+  AUTH: 'Auth',
   APP: 'App',
-  HOME: 'Home',
   LOGIN: 'Login',
   REGISTER: 'Register',
+  HOME: 'Home',
+
+  PROFILE: 'Profile',
+  CONTACTUS: 'CONTACTUS',
+  ABOUTUS: 'ABOUTUS',
+  FAQ: 'FAQ'
 };

@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import { ActionTypes as types } from '../configs';
 
-export default function registerProperty(state, action) {
+export default function LoginStory(state, action) {
   state = state || {
-    phoneNumber: ''
+    users: []
   };
 
   switch (action.type) {
-    case types.SET_PHONE_NUMBER:
+    case types.SET_LOGIN_STORY:
       state = _.assign({}, state, {
-        phoneNumber: action.phoneNumber
+        users: action.users
       });
       return state;
     default:

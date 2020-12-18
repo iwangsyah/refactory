@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 import { createStore, compose, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -6,9 +6,9 @@ import { persistStore, persistReducer } from 'redux-persist';
 import rootReducer from '../reducers';
 
 const persistConfig = {
-  key: 'root2',
+  key: 'root',
   storage: AsyncStorage,
-  whitelist: ['registerProperty']
+  whitelist: ['user', 'loginStory', 'registeredUsers']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

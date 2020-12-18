@@ -1,9 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, Image, ActivityIndicator, StatusBar } from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
+import _ from 'lodash';
+import { Store } from '../../util';
 import Theme from '../../styles/Theme'
-import { Astorage } from '../../util';
 import Images from '../../assets/images';
+import { Navigation } from '../../configs';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,9 +30,16 @@ const FocusAwareStatusBar = withNavigationFocus(({ isFocused, ...rest }) =>
 
 export default class AuthLoadingScreen extends React.Component {
 
-  componentDidMount() {
+  componentDidMount = () => {
+    const { user } = Store.store.getState();
+    let route;
+    if (_.isEmpty(user)) {
+      route = Navigation.AUTH;
+    } else {
+      route = Navigation.APP;
+    }
     setTimeout(() => {
-      this.props.navigation.navigate('Auth')
+      this.props.navigation.navigate(route)
     }, 1000)
   }
 

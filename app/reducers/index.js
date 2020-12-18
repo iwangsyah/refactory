@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
-import registeruser from './RegisterUser';
+import user from './User';
+import loginStory from './LoginStory';
+import registeredUsers from './RegisteredUsers';
 
 const appReducer = combineReducers({
-  registeruser
+  user,
+  loginStory,
+  registeredUsers
 });
 
 const rootReducer = (state, action) =>

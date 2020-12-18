@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, View, StyleSheet, TextInput, Text, Image } from 'react-native';
+import { View, StyleSheet, TextInput, Text, Image } from 'react-native';
 import Theme from '../styles/Theme';
 
 const styles = StyleSheet.create({

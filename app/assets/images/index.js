@@ -1,7 +1,18 @@
 export default Images = {
+  icAbout: require('./icons/ic_about.png'),
+  icArrowDown: require('./icons/ic_arrow_down.png'),
+  icArrowLeft: require('./icons/ic_arrow_left.png'),
+  icArrowRight: require('./icons/ic_arrow_right.png'),
+  icArrowUp: require('./icons/ic_arrow_up.png'),
   icCamera: require('./icons/ic_camera.png'),
   icCloseModal: require('./icons/ic_close_modal.png'),
+  icCourse: require('./icons/ic_course.png'),
   icGallery: require('./icons/ic_gallery.png'),
+  icHelp: require('./icons/ic_help.png'),
+  icHome: require('./icons/ic_home.png'),
   icLogo: require('./icons/ic_logo.png'),
+  icPhone: require('./icons/ic_phone.png'),
+  icProfile: require('./icons/ic_profile.png'),
+  icWhatsapp: require('./icons/ic_whatsapp.png'),
   bgLogin: require('./bg_login.png'),
 };

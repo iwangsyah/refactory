@@ -6,6 +6,11 @@ export default StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 8
+  },
   title: {
     fontSize: 50,
     fontFamily: Theme.fontBold,
