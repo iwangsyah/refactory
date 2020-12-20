@@ -31,7 +31,7 @@ const FocusAwareStatusBar = withNavigationFocus(({ isFocused, ...rest }) =>
 export default class AuthLoadingScreen extends React.Component {
 
   componentDidMount = () => {
-    const { user } = Store.store.getState();
+    const { user } = Store.store.getState().user;
     let route;
     if (_.isEmpty(user)) {
       route = Navigation.AUTH;
