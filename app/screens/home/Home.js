@@ -4,6 +4,7 @@ import {
   ImageBackground,
   ScrollView,
   StyleSheet,
+  Dimensions,
   Image,
   Text,
   View
@@ -14,6 +15,8 @@ import { CommonStyle, LoginStyle, Theme } from '../../styles';
 import Images from '../../assets/images';
 import { ApiService } from '../../services';
 import { Browser } from '../../util';
+
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +52,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   image: {
-    minWidth: 120,
+    minWidth: width / 4,
     minHeight: 60,
     marginHorizontal: 16,
     resizeMode: 'contain'

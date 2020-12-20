@@ -66,7 +66,7 @@ export default class ModalFoto extends React.Component {
             <View style={ModalBottomStyle.contentContainer}>
               <TouchableOpacity
                 style={LoginStyle.iconContainer}
-                onPress={() => this._onSelectedItem('gallery')}
+                onPress={() => this._onSelectedItem('capture')}
               >
                 <Image source={Images.icCamera} style={LoginStyle.image} />
               </TouchableOpacity>

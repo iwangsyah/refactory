@@ -142,6 +142,7 @@ export default class CourseDetail extends React.Component {
         />
         <ActivityIndicator
           size="large"
+          color="#FFFFFF"
           style={{
             marginTop: 50,
             display: indicator ? 'flex' : 'none',
