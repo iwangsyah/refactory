@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Platform } from 'react-native';
 import Theme from '../styles/Theme';
 
 const styles = StyleSheet.create({
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     paddingHorizontal: 20,
-    bottom: 20
+    bottom: Platform.OS == 'ios' ? 20 : 0
   },
   location: {
     marginTop: 20,

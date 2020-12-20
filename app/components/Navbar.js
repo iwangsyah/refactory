@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, Image, StatusBar, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StatusBar,
+  TouchableOpacity
+} from 'react-native';
 import StatusBarStyle from '../styles/StatusBar';
 import navbarStyle from '../styles/Navbar';
 import Images from '../assets/images';

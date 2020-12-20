@@ -220,9 +220,16 @@ const AuthStack = createStackNavigator(
   },
   {
     headerMode: Navigation.LOGIN,
-    navigationOptions: {
+    defaultNavigationOptions: ({ navigation }) => ({
+      headerShown: false,
+      gestureEnabled: true,
+      gestureDirection: 'horizontal',
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+    }),
+    navigationOptions: ({ navigation }) => ({
       headerVisible: false,
-    },
+      tabBarVisible: navigation.state.index <= 0,
+    }),
   },
 );
 

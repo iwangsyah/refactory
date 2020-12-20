@@ -8,9 +8,9 @@ import {
   View,
   Text,
 } from 'react-native';
-import { NavBar } from '../../components';
-import { Theme } from '../../styles';
 import Images from '../../assets/images';
+import { NavBar } from '../../components';
+import { CommonStyle, Theme } from '../../styles';
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,34 +18,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  navbar: {
+  content: {
+    borderColor: Theme.lineColor,
+    borderBottomWidth: 1,
+    paddingVertical: 16,
+  },
+  item: {
+    width: '100%',
     flexDirection: 'row',
-    height: width / 7,
-    paddingHorizontal: 20,
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    backgroundColor: Theme.bgPrimaryColor,
   },
-  circle: {
-    width: width / 4.8,
-    height: width / 4.8,
-    marginTop: width / 40,
-    borderRadius: width / 2.4,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
+  subItem: {
+    backgroundColor: '#E8E8E8',
+    borderRadius: 5,
+    padding: 12,
+    marginTop: 15,
+    marginBottom: 0
   },
-  shadow: {
-    shadowColor: 'rgba(0, 0, 0, 0.45)',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    elevation: 3.5,
-    shadowRadius: 5,
-    shadowOpacity: 0.5,
-    borderTopWidth: 0,
+  text: {
+    fontFamily: Theme.fontMedium
   },
+  icon: {
+    width: 12,
+    height: 12,
+    resizeMode: 'contain'
+  }
 });
 
 export default class FAQ extends React.Component {
@@ -117,45 +116,28 @@ export default class FAQ extends React.Component {
     const active = item.id === this.state.selectedId;
     return (
       <TouchableOpacity
-        style={{
-          borderColor: Theme.lineColor,
-          borderBottomWidth: 1,
-          paddingVertical: 16,
-        }}
+        style={styles.content}
         onPress={() => {
           const id = active ? 0 : item.id;
           this.setState({ selectedId: id });
         }}>
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            backgroundColor: Theme.bgPrimaryColor,
-          }}>
-          <Text family="medium" style={{ flex: 1, marginRight: 20 }}>
+        <View style={styles.item}>
+          <Text style={[styles.text, { marginRight: 20 }]}>
             {item.title}
           </Text>
           <Image
-            style={{ width: 12, height: 12, resizeMode: 'contain' }}
+            style={styles.icon}
             source={active ? Images.icArrowUp : Images.icArrowDown}
           />
         </View>
-        <View
-          style={{ paddingHorizontal: 20, display: active ? 'flex' : 'none' }}>
+        <View style={{
+          paddingHorizontal: 20,
+          display: active ? 'flex' : 'none'
+        }}
+        >
           {item.items.map((object) => (
-            <View
-              style={{
-                backgroundColor: '#E8E8E8',
-                borderRadius: 5,
-                padding: 12,
-                marginTop: 15,
-                marginBottom: 0,
-              }}>
-              <Text>
-                {object.title}
-              </Text>
+            <View style={styles.subItem}>
+              <Text style={styles.text}>{object.title} </Text>
             </View>
           ))}
         </View>
@@ -172,10 +154,7 @@ export default class FAQ extends React.Component {
             <FlatList
               data={this.state.data}
               keyExtractor={(item, index) => index.toString()}
-              contentContainerStyle={{
-                paddingHorizontal: 20,
-                paddingVertical: 8,
-              }}
+              contentContainerStyle={CommonStyle.flatList}
               renderItem={this._renderItem}
             />
           </View>

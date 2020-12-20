@@ -1,8 +1,20 @@
 import React from 'react';
-import { TouchableOpacity, ScrollView, StyleSheet, Dimensions, FlatList, Image, Text, View } from 'react-native';
-import { Background, NavBar, Button } from '../../components';
+import {
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+  Image,
+  Text,
+  View,
+  ActivityIndicator
+} from 'react-native';
+import { Background, NavBar } from '../../components';
+import { CommonStyle, LoginStyle, Theme } from '../../styles';
 import { ApiService } from '../../services';
-import { LoginStyle, Theme } from '../../styles';
+import { Browser } from '../../util';
+
 
 const { width } = Dimensions.get('window');
 
@@ -11,15 +23,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
-  content: {
-    marginTop: 16,
-    backgroundColor: Theme.bgPrimaryColor,
-    padding: 16
-  },
   text: {
+    fontFamily: Theme.fontMedium,
     color: Theme.txtPrimaryColor,
-    marginBottom: 16,
-    textAlign: 'center',
   },
   imageHeader: {
     width,
@@ -46,23 +52,38 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 8,
   },
-  shadow: {
-    shadowColor: 'rgba(119, 117, 117, 0.8)',
-    shadowOffset: {
-      width: 0,
-      height: 3.5
-    },
-    elevation: 3.5,
-    shadowRadius: 4,
-    shadowOpacity: 0.5
+  button: {
+    backgroundColor: Theme.buttonColor,
+    color: Theme.txtSecondaryColor,
+    borderRadius: 5,
+    padding: 5
   },
+  txtButton: {
+    fontSize: 12,
+    fontFamily: Theme.fontBold,
+    color: Theme.txtSecondaryColor
+  },
+  section: {
+    fontFamily: Theme.fontBold,
+    backgroundColor: '#D5D5D5',
+    padding: 16
+  },
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderColor: Theme.lineColor,
+  }
 })
 
 export default class CourseDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {}
+      data: {},
+      indicator: true
     }
   }
 
@@ -70,22 +91,38 @@ export default class CourseDetail extends React.Component {
     ApiService.getDetailCourse()
       .then(response => {
         const { data } = response
-        this.setState({ data })
+        this.setState({ data, indicator: false })
       })
       .catch(error => {
-        console.log('error: ', error);
+        console.log(error);
+        this.setState({ indicator: false })
       });
   }
 
-  _renderItem = ({ item }) => (
-    <View style={[styles.box, styles.shadow]}>
+  _renderMateri = () => (
+    <View style={[CommonStyle.content, CommonStyle.shadow]}>
       <View style={{ flex: 1 }}>
-        <Text style={{ fontFamily: Theme.fontBold, backgroundColor: '#D5D5D5', padding: 16 }}>{item.section}</Text>
+        <Text style={CommonStyle.textTitle}>Materi Course</Text>
+        <FlatList
+          data={this.state.data['materi course']}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={CommonStyle.flatList}
+          renderItem={this._renderItem}
+        />
+      </View>
+    </View>
+  )
+
+  _renderItem = ({ item }) => (
+    <View style={[styles.box, CommonStyle.shadow]}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.section}>{item.section}</Text>
         {item.data.map((data) => (
-          <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderColor: Theme.lineColor, padding: 16, justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text>{`${data.title} (${data['time-in']})`}</Text>
-            <View style={{ backgroundColor: Theme.buttonColor, color: Theme.txtSecondaryColor, borderRadius: 5, padding: 5 }}>
-              <Text style={{ fontSize: 12, fontFamily: Theme.fontBold, color: Theme.txtSecondaryColor }}>START</Text></View>
+          <View style={styles.item}>
+            <Text style={styles.text}>{`${data.title} (${data['time-in']})`}</Text>
+            <TouchableOpacity style={styles.button} onPress={() => Browser.open(data.url)}>
+              <Text style={styles.txtButton}>START</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </View>
@@ -93,42 +130,40 @@ export default class CourseDetail extends React.Component {
   )
 
   render() {
-    const { data } = this.state;
+    const { data, indicator } = this.state;
     const { photo_url } = this.props.navigation.state.params;
 
     return (
       <Background transparent style={LoginStyle.container}>
-        <NavBar title="Course Detail" bgText={Theme.primaryColor} onBack={() => this.props.navigation.pop()} />
-        <ScrollView>
+        <NavBar
+          title="Course Detail"
+          bgText={Theme.primaryColor}
+          onBack={() => this.props.navigation.pop()}
+        />
+        <ActivityIndicator
+          size="large"
+          style={{
+            marginTop: 50,
+            display: indicator ? 'flex' : 'none',
+          }}
+        />
+        {!indicator && <ScrollView showsVerticalScrollIndicator={false}>
           <Image source={{ uri: photo_url }} style={styles.imageHeader} />
           <View style={styles.container}>
-            <View style={[styles.content, styles.shadow]}>
-              <Text style={styles.title}>Tentang Course</Text>
-              <Text style={styles.text}>{data['short-description']}</Text>
+            <View style={[CommonStyle.content, CommonStyle.shadow]}>
+              <Text style={CommonStyle.textTitle}>Tentang Course</Text>
+              <Text style={CommonStyle.textDescription}>{data['short-description']}</Text>
             </View>
-            <View style={[styles.content, styles.shadow]}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.title}>Materi Course</Text>
-                <FlatList
-                  data={data['materi course']}
-                  keyExtractor={(item, index) => index.toString()}
-                  contentContainerStyle={{
-                    paddingHorizontal: 16,
-                    paddingVertical: 8,
-                  }}
-                  renderItem={this._renderItem}
-                />
-              </View>
-            </View>
-            <View style={[styles.content, styles.shadow]}>
+            {this._renderMateri()}
+            <View style={[CommonStyle.content, CommonStyle.shadow]}>
               <Image source={{ uri: data['quistion-photo'] }} style={styles.image} />
               <View style={{ flex: 1 }}>
-                <Text style={styles.title}>{data.quistion}</Text>
-                <Text style={styles.text}>{data.answer}</Text>
+                <Text style={CommonStyle.textTitle}>{data.quistion}</Text>
+                <Text style={CommonStyle.textDescription}>{data.answer}</Text>
               </View>
             </View>
           </View>
-        </ScrollView>
+        </ScrollView>}
       </Background>
     )
   }

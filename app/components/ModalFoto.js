@@ -22,6 +22,8 @@ export default class ModalFoto extends React.Component {
   _onSelectedItem = (type) => {
     if (type == 'gallery') {
       ImagePicker.openPicker({
+        width: width / 2,
+        height: width / 2,
         cropping: true
       }).then(image => {
         this.props.onSelectedItem(image.path)
@@ -29,6 +31,8 @@ export default class ModalFoto extends React.Component {
       });
     } else {
       ImagePicker.openCamera({
+        width: width / 2,
+        height: width / 2,
         cropping: true
       }).then(image => {
         this.props.onSelectedItem(image.path)

@@ -1,9 +1,11 @@
 export default Images = {
   icAbout: require('./icons/ic_about.png'),
+  icApproval: require('./icons/ic_approval.png'),
   icArrowDown: require('./icons/ic_arrow_down.png'),
   icArrowLeft: require('./icons/ic_arrow_left.png'),
   icArrowRight: require('./icons/ic_arrow_right.png'),
   icArrowUp: require('./icons/ic_arrow_up.png'),
+  icBolt: require('./icons/ic_bolt.png'),
   icCamera: require('./icons/ic_camera.png'),
   icCloseModal: require('./icons/ic_close_modal.png'),
   icCourse: require('./icons/ic_course.png'),
@@ -15,4 +17,5 @@ export default Images = {
   icProfile: require('./icons/ic_profile.png'),
   icWhatsapp: require('./icons/ic_whatsapp.png'),
   bgLogin: require('./bg_login.png'),
+  bgHome: require('./bg_home.png'),
 };

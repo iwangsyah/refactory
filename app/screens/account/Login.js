@@ -171,7 +171,9 @@ export class Login extends React.Component {
             title="Login"
             onPress={() => this._onLogin()}
           />
-          <Text style={[LoginStyle.text, { textAlign: 'center' }]}>Belum memiliki akun? <Text style={LoginStyle.txtColor} onPress={() => NavigationService.navigate(Navigation.REGISTER)}>Register</Text></Text>
+          <Text style={[LoginStyle.text, { textAlign: 'center' }]}>
+            Belum memiliki akun? <Text style={LoginStyle.txtColor} onPress={() => NavigationService.navigate(Navigation.REGISTER)}>Register</Text>
+          </Text>
           <Location data={location} />
         </Background>
       </ImageBackground>

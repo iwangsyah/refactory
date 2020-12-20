@@ -48,7 +48,7 @@ export default class AuthLoadingScreen extends React.Component {
       <View style={styles.container}>
         <FocusAwareStatusBar
           translucent
-          backgroundColor="red"
+          backgroundColor="transparent"
         />
         <ActivityIndicator
           size="large"

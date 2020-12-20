@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 16,
     marginBottom: 16,
-    fontFamily: Theme.fontRegular
+    fontFamily: Theme.fontRegular,
+    lineHeight: 25
   },
   whatsapp: {
     flexDirection: 'row',

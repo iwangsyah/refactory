@@ -11,7 +11,7 @@ export default StyleSheet.create({
     marginVertical: 8
   },
   title: {
-    fontSize: 50,
+    fontSize: 40,
     fontFamily: Theme.fontBold,
     marginBottom: 16,
     marginTop: 50,
