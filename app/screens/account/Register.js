@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,68 +7,66 @@ import {
   TouchableOpacity
 } from 'react-native';
 import _ from 'lodash';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
-  Background,
-  ModalFoto,
-  InputText,
+  Button,
   Location,
-  Button
+  InputText,
+  ModalFoto,
+  Background
 } from '../../components';
-import Actions from '../../actions';
 import Images from '../../assets/images';
-import { Navigation } from '../../configs';
 import { LoginStyle } from '../../styles';
-import { NavigationService } from '../../util';
+import { Navigation, ActionTypes as types } from '../../configs';
 
-export class Register extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      username: '',
-      password: '',
-      imageUri: '',
-      isVisible: false,
-    }
+function Register(props) {
+  const { navigation } = props;
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [imageUri, setImageUri] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
+  const reducer = useSelector(state => state);
+  const { user, loginStory, registeredUsers } = reducer;
+  const dispatch = useDispatch();
+
+  const _setRegisteredUsers = (users) => {
+    dispatch({ type: types.SET_REGISTERED_USERS, users });
   }
 
-  _onShowModal = (isVisible) => {
-    this.setState({ isVisible })
+  const _onShowModal = (isVisible) => {
+    setIsVisible(isVisible);
   }
 
-  _onChangeFoto = (imageUri) => {
-    this.setState({ imageUri })
+  const _onChangeFoto = (imageUri) => {
+    setImageUri(imageUri);
   }
 
-  _onRegister = () => {
-    const { loginStory, registeredUsers, setRegisteredUsers } = this.props;
-    const { email, username, password, imageUri } = this.state;
-    const data = { email, username, password, imageUri }
+  const _onRegister = () => {
+    const data = { email, username, password, imageUri };
 
     if (email && username && password && imageUri) {
-      const dataExist = _.find(registeredUsers, (item) => {
+      const dataExist = _.find(registeredUsers.users, (item) => {
         return item.email === email;
       })
       if (dataExist) {
-        const index = _.findIndex(loginStory, (item) => (item.email == email));
+        const index = _.findIndex(loginStory.users, (item) => (item.email == email));
         if (index < 0) {
           alert('Email sudah terdaftar\ntetapi anda belum pernah login')
         } else {
-          alert(`Email sudah terdaftar\nAnda telah login menggunakan\nusername : ${email}\nsebanyak ${loginStory[index].count} kali`);
+          alert(`Email sudah terdaftar\nAnda telah login menggunakan\nusername : ${email}\nsebanyak ${loginStory.users[index].count} kali`);
         }
       } else {
-        registeredUsers.push(data)
-        setRegisteredUsers(registeredUsers)
-        NavigationService.navigate(Navigation.LOGIN)
+        registeredUsers.users.push(data);
+        _setRegisteredUsers(registeredUsers.users);
+        navigation.navigate(Navigation.LOGIN);
       }
     } else {
       alert('Semua data harus diisi')
     }
   }
 
-  renderFoto = () => {
-    const { imageUri } = this.state;
+  const renderFoto = () => {
     let content;
     if (imageUri) {
       content = (
@@ -77,7 +75,7 @@ export class Register extends React.Component {
             source={{ isStatic: true, uri: imageUri }}
             style={LoginStyle.imagePreview}
           />
-          <TouchableOpacity style={LoginStyle.buttonDelete} onPress={() => this._onChangeFoto('')}>
+          <TouchableOpacity style={LoginStyle.buttonDelete} onPress={() => _onChangeFoto('')}>
             <Text style={LoginStyle.text}>Hapus Foto</Text>
           </TouchableOpacity>
         </View>
@@ -85,10 +83,7 @@ export class Register extends React.Component {
     } else {
       content = (
         <View style={{ flex: 5 }}>
-          <TouchableOpacity
-            style={LoginStyle.iconContainer}
-            onPress={() => this._onShowModal(true)}
-          >
+          <TouchableOpacity style={LoginStyle.iconContainer} onPress={() => _onShowModal(true)}>
             <Image
               source={Images.icCamera}
               style={LoginStyle.image} />
@@ -107,62 +102,45 @@ export class Register extends React.Component {
     )
   }
 
-  render() {
-    const { location } = this.props;
-    const { email, username, password } = this.state;
-
-    return (
-      <ImageBackground source={Images.bgLogin} style={{ flex: 1 }}>
-        <Background transparent style={[LoginStyle.container, { paddingHorizontal: 16 }]}>
-          <Text style={LoginStyle.title}>Register</Text>
-          <View style={LoginStyle.box}>
-            <InputText
-              title="Username"
-              onChange={username => this.setState({ username })}
-              value={username}
-            />
-            {this.renderFoto()}
-            <InputText
-              title="Email"
-              keyboardType="email-address"
-              onChange={email => this.setState({ email: _.toLower(email) })}
-              value={_.toLower(email)}
-            />
-            <InputText
-              title="Password"
-              secureTextEntry
-              onChange={password => this.setState({ password })}
-              value={password}
-            />
-          </View>
-          <Button
-            title="Register"
-            onPress={() => this._onRegister()}
+  return (
+    <ImageBackground source={Images.bgLogin} style={{ flex: 1 }}>
+      <Background transparent style={[LoginStyle.container, { paddingHorizontal: 16 }]}>
+        <Text style={LoginStyle.title}>Register</Text>
+        <View style={LoginStyle.box}>
+          <InputText
+            title="Username"
+            onChange={username => setUsername(username)}
+            value={username}
           />
-          <Text style={[LoginStyle.text, { textAlign: 'center' }]}>Sudah memiliki akun? <Text style={LoginStyle.txtColor} onPress={() => NavigationService.navigate(Navigation.LOGIN)}>Login</Text></Text>
-          <Location data={location} />
-        </Background>
-        <ModalFoto
-          visible={this.state.isVisible}
-          onClose={() => this._onShowModal(false)}
-          onSelectedItem={(imageUri) => this._onChangeFoto(imageUri)}
+          {renderFoto()}
+          <InputText
+            title="Email"
+            keyboardType="email-address"
+            onChange={email => setEmail(_.toLower(email))}
+            value={_.toLower(email)}
+          />
+          <InputText
+            title="Password"
+            secureTextEntry
+            onChange={password => setPassword(password)}
+            value={password}
+          />
+        </View>
+        <Button
+          title="Register"
+          onPress={() => _onRegister()}
         />
-      </ImageBackground>
-    );
-  }
+        <Text style={[LoginStyle.text, { textAlign: 'center' }]}>Sudah memiliki akun? <Text style={LoginStyle.txtColor} onPress={() => navigation.navigate(Navigation.LOGIN)}>Login</Text></Text>
+        <Location data={user.location} />
+      </Background>
+      <ModalFoto
+        visible={isVisible}
+        onClose={() => _onShowModal(false)}
+        onSelectedItem={(imageUri) => _onChangeFoto(imageUri)}
+      />
+    </ImageBackground>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  location: state.user.location,
-  loginStory: state.loginStory.users,
-  registeredUsers: state.registeredUsers.users
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setRegisteredUsers: (users) => {
-    dispatch(Actions.setRegisteredUsers(users));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default Register;
 

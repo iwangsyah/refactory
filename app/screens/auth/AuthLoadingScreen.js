@@ -1,8 +1,14 @@
-import React from 'react';
-import { StyleSheet, View, Image, ActivityIndicator, StatusBar } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  StatusBar,
+  Image,
+  View,
+} from 'react-native';
 import { withNavigationFocus } from 'react-navigation';
+import { useSelector } from 'react-redux';
 import _ from 'lodash';
-import { Store } from '../../util';
 import Theme from '../../styles/Theme'
 import Images from '../../assets/images';
 import { Navigation } from '../../configs';
@@ -10,8 +16,8 @@ import { Navigation } from '../../configs';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: Theme.primaryColor,
   },
   image: {
@@ -28,10 +34,12 @@ const FocusAwareStatusBar = withNavigationFocus(({ isFocused, ...rest }) =>
   isFocused ? <StatusBar {...rest} /> : null,
 );
 
-export default class AuthLoadingScreen extends React.Component {
+function AuthLoadingScreen(props) {
+  const { navigation } = props;
+  const reducer = useSelector(state => state);
 
-  componentDidMount = () => {
-    const { user } = Store.store.getState().user;
+  useEffect(() => {
+    const { user } = reducer.user;
     let route;
     if (_.isEmpty(user)) {
       route = Navigation.AUTH;
@@ -39,27 +47,26 @@ export default class AuthLoadingScreen extends React.Component {
       route = Navigation.APP;
     }
     setTimeout(() => {
-      this.props.navigation.navigate(route)
+      navigation.navigate(route)
     }, 1000)
-  }
+  }, [])
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <FocusAwareStatusBar
-          translucent
-          backgroundColor="transparent"
-        />
-        <ActivityIndicator
-          size="large"
-          style={styles.indicator}
-        />
-        <Image
-          source={Images.icLogo}
-          style={styles.image}
-        />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <FocusAwareStatusBar
+        translucent
+        backgroundColor="transparent"
+      />
+      <ActivityIndicator
+        size="large"
+        style={styles.indicator}
+      />
+      <Image
+        source={Images.icLogo}
+        style={styles.image}
+      />
+    </View>
+  );
 }
 
+export default AuthLoadingScreen;

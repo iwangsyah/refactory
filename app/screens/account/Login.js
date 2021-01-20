@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,31 +11,41 @@ import {
   checkMultiple,
   PERMISSIONS,
 } from 'react-native-permissions';
-import { connect } from 'react-redux';
 import Geocoder from 'react-native-geocoder';
+import { useSelector, useDispatch } from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import { Background, InputText, Location, Button } from '../../components';
-import { NavigationService } from '../../util';
-import { Navigation } from '../../configs';
+import { Navigation, ActionTypes as types } from '../../configs';
 import { LoginStyle } from '../../styles';
 import Images from '../../assets/images';
-import Actions from '../../actions';
 
 
-export class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      password: '',
-    }
+
+function Login(props) {
+  const { navigation } = props;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const reducer = useSelector(state => state);
+  const { user, loginStory, registeredUsers } = reducer;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    _requestLocationPermission();
+  }, [])
+
+  const _setUserLogin = (user) => {
+    dispatch({ type: types.SET_USER_LOGIN, user });
   }
 
-  componentDidMount = () => {
-    this._requestLocationPermission();
+  const _setLoginStory = (users) => {
+    dispatch({ type: types.SET_LOGIN_STORY, users });
   }
 
-  async _requestLocationPermission() {
+  const _setUserLocation = (location) => {
+    dispatch({ type: types.SET_USER_LOCATION, location });
+  }
+
+  const _requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
       const always = PERMISSIONS.IOS.LOCATION_ALWAYS;
       const whenInUse = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
@@ -44,7 +54,7 @@ export class Login extends React.Component {
           statuses[always] === 'granted' ||
           statuses[whenInUse] === 'granted'
         ) {
-          this._getLocation();
+          _getLocation();
         } else {
           requestMultiple([always, whenInUse]).then((statuses) => {
             console.log(statuses)
@@ -69,7 +79,7 @@ export class Login extends React.Component {
             },
           );
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            this._getLocation();
+            _getLocation();
           } else {
             alert("You don't have access for the location");
           }
@@ -80,27 +90,26 @@ export class Login extends React.Component {
     }
   }
 
-  _getLocation = () => {
+  const _getLocation = () => {
     Geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-
         const location = {
           lat: latitude,
           lng: longitude,
         };
-        this._geocode(location);
+        _geocode(location);
       },
       (error) => console.log(error),
       { enableHighAccuracy: false, timeout: 3000 },
     );
   };
 
-  _geocode = (location) => {
+  const _geocode = (location) => {
     Geocoder.geocodePosition(location)
       .then((res) => {
         const loc = res[1] || res[0];
-        this.props.setUserLocation(
+        _setUserLocation(
           {
             latitude: loc.position.lat,
             longitude: loc.position.lng,
@@ -111,93 +120,69 @@ export class Login extends React.Component {
       .catch((err) => console.log(err));
   };
 
-  _onLogin = () => {
-    const { loginStory, registeredUsers, setUserLogin, setLoginStory } = this.props;
-    const { email, password } = this.state;
-    let user;
+  const _onLogin = () => {
+    let dataUser;
     if (email && password) {
-      const dataExist = _.find(registeredUsers, (item) => {
-        user = item;
+      const dataExist = _.find(registeredUsers.users, (item) => {
+        dataUser = item;
         return item.email === email;
       })
       if (dataExist && dataExist.password == password) {
-        const index = _.findIndex(loginStory, (item) => (item.email == email));
+        const index = _.findIndex(loginStory.users, (item) => (item.email == email));
         let count;
         if (index < 0) {
           count = 1
-          loginStory.push({ email, count });
+          loginStory.users.push({ email, count });
         } else {
-          count = loginStory[index].count + 1
+          count = loginStory.users[index].count + 1
         }
-        setUserLogin(user)
-        setLoginStory(loginStory);
-        alert(`anda telah login menggunakan\nusername : ${email}\nsebanyak ${count} kali`);
-        NavigationService.navigate(Navigation.APP)
+        _setUserLogin(dataUser)
+        _setLoginStory(loginStory.users);
+        alert(`You have logged in using\nthe username : ${email}\n${count} times`);
+        navigation.navigate(Navigation.APP)
       } else if (dataExist) {
-        alert('Password salah');
-        this.setState({ password: '' });
+        setPassword('');
+        alert('Wrong password');
       } else {
-        alert('Email belum terdaftar');
-        this.setState({ email: '', password: '' });
+        setEmail('');
+        setPassword('');
+        alert('Email has not been registered');
       }
     } else {
-      alert('Semua data harus diisi')
+      alert('All data must be filled in')
     }
   }
 
-  render() {
-    const { location } = this.props;
-    const { email, password } = this.state;
-
-    return (
-      <ImageBackground source={Images.bgLogin} style={{ flex: 1 }}>
-        <Background transparent style={[LoginStyle.container, { paddingHorizontal: 16 }]}>
-          <Text style={LoginStyle.title}>Login</Text>
-          <View style={LoginStyle.box}>
-            <InputText
-              title="Email"
-              keyboardType="email-address"
-              onChange={email => this.setState({ email: _.toLower(email) })}
-              value={_.toLower(email)}
-            />
-            <InputText
-              title="Password"
-              secureTextEntry
-              onChange={password => this.setState({ password })}
-              value={password}
-            />
-          </View>
-          <Button
-            title="Login"
-            onPress={() => this._onLogin()}
+  return (
+    <ImageBackground source={Images.bgLogin} style={{ flex: 1 }}>
+      <Background transparent style={[LoginStyle.container, { paddingHorizontal: 16 }]}>
+        <Text style={LoginStyle.title}>Login</Text>
+        <View style={LoginStyle.box}>
+          <InputText
+            title="Email"
+            keyboardType="email-address"
+            onChange={email => setEmail(_.toLower(email))}
+            value={_.toLower(email)}
           />
-          <Text style={[LoginStyle.text, { textAlign: 'center' }]}>
-            Belum memiliki akun? <Text style={LoginStyle.txtColor} onPress={() => NavigationService.navigate(Navigation.REGISTER)}>Register</Text>
-          </Text>
-          <Location data={location} />
-        </Background>
-      </ImageBackground>
-    );
-  }
+          <InputText
+            title="Password"
+            secureTextEntry
+            onChange={password => setPassword(password)}
+            value={password}
+          />
+        </View>
+        <Button
+          title="Login"
+          onPress={() => _onLogin()}
+        />
+        <Text style={[LoginStyle.text, { textAlign: 'center' }]}>
+          Belum memiliki akun? <Text style={LoginStyle.txtColor} onPress={() => navigation.navigate(Navigation.REGISTER)}>Register</Text>
+        </Text>
+        <Location data={user.location} />
+      </Background>
+    </ImageBackground>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  location: state.user.location,
-  loginStory: state.loginStory.users,
-  registeredUsers: state.registeredUsers.users
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setUserLogin: (user) => {
-    dispatch(Actions.setUserLogin(user));
-  },
-  setLoginStory: (users) => {
-    dispatch(Actions.setLoginStory(users));
-  },
-  setUserLocation: (location) => {
-    dispatch(Actions.setUserLocation(location));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
 

@@ -2,10 +2,20 @@ import { StyleSheet } from 'react-native';
 import Theme from './Theme';
 
 export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Theme.bgPrimaryColor
+  },
   content: {
     backgroundColor: Theme.bgPrimaryColor,
     marginVertical: 8,
     padding: 16
+  },
+  subText: {
+    fontSize: 18,
+    color: Theme.txtPrimaryColor,
+    fontFamily: Theme.fontMedium,
+    marginTop: 16,
   },
   textTitle: {
     fontSize: 18,

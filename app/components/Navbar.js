@@ -13,11 +13,7 @@ import { Theme } from '../styles';
 
 export default NavBar = ({ title, onBack, bgText }) => (
   <View>
-    <View
-      style={[
-        StatusBarStyle.container,
-        { backgroundColor: Theme.primaryColor },
-      ]}>
+    <View style={StatusBarStyle.container}>
       <StatusBar
         translucent
         backgroundColor="transparent"

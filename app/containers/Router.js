@@ -100,14 +100,12 @@ const BottomNavigationHome = createBottomTabNavigator(
             rippleCentered
             onPress={() => navigation.navigate(Navigation.HOME)}>
             <Image
-              style={{
-                width: 25,
-                height: 25,
+              style={[BottomTabBar.image, {
                 tintColor:
                   navigation.state.index == 0
                     ? Theme.primaryColor
                     : Theme.lineColor,
-              }}
+              }]}
               source={Images.icHome}
             />
             <Text
@@ -130,14 +128,12 @@ const BottomNavigationHome = createBottomTabNavigator(
             rippleCentered
             onPress={() => NavigationService.navigate(Navigation.COURSE)}>
             <Image
-              style={{
-                width: 25,
-                height: 25,
+              style={[BottomTabBar.image, {
                 tintColor:
                   navigation.state.index == 1
                     ? Theme.primaryColor
                     : Theme.lineColor,
-              }}
+              }]}
               source={Images.icCourse}
             />
             <Text
@@ -160,14 +156,12 @@ const BottomNavigationHome = createBottomTabNavigator(
             rippleCentered
             onPress={() => NavigationService.navigate(Navigation.PROFILE)}>
             <Image
-              style={{
-                width: 25,
-                height: 25,
+              style={[BottomTabBar.image, {
                 tintColor:
                   navigation.state.index == 2
                     ? Theme.primaryColor
                     : Theme.lineColor,
-              }}
+              }]}
               source={Images.icProfile}
             />
             <Text

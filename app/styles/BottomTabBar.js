@@ -9,8 +9,8 @@ export default StyleSheet.create({
         backgroundColor: Theme.bgPrimaryColor,
         shadowColor: 'rgba(0, 0, 0, 0.15)',
         shadowOffset: {
-          width: 0,
-          height: -1
+            width: 0,
+            height: -1
         },
         elevation: 25,
         shadowRadius: 10,
@@ -23,5 +23,8 @@ export default StyleSheet.create({
         alignSelf: 'center',
         marginBottom: Platform.OS === 'ios' ? 0 : 10
     },
-    image: { height: 34 }
+    image: {
+        width: 25,
+        height: 25
+    }
 });

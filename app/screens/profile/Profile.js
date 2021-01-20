@@ -8,13 +8,11 @@ import {
   View,
   Text
 } from 'react-native';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Navigation, ActionTypes as types } from '../../configs';
 import { Button, NavBar } from '../../components';
 import Images from '../../assets/images';
-import { Navigation } from '../../configs';
 import { Theme } from '../../styles';
-import { NavigationService } from '../../util';
-import Actions from '../../actions';
 
 const styles = StyleSheet.create({
   container: {
@@ -52,30 +50,38 @@ const KEYFAQ = 'KEYFAQ';
 const KEYABOUTUS = 'KEYABOUTUS';
 const KEYCONTACTUS = 'KEYCONTACTUS';
 
-export class Profile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+function Profile(props) {
+  const { navigation } = props;
+  const reducer = useSelector(state => state);
+  const dispatch = useDispatch();
+  const listGeneral = [
+    { key: KEYFAQ, title: 'FAQ', image: Images.icHelp },
+    { key: KEYABOUTUS, title: 'About Us', image: Images.icAbout },
+    { key: KEYCONTACTUS, title: 'Contact Us', image: Images.icPhone }
+  ];
+
+  const _setUserLogin = (user) => {
+    dispatch({ type: types.SET_USER_LOGIN, user });
   }
 
-  clickGeneral(data) {
+  const _onClickGeneral = (data) => {
     switch (data) {
       case KEYFAQ:
-        NavigationService.navigate(Navigation.FAQ);
+        navigation.navigate(Navigation.FAQ);
         break;
       case KEYABOUTUS:
-        NavigationService.navigate(Navigation.ABOUTUS);
+        navigation.navigate(Navigation.ABOUTUS);
         break;
       case KEYCONTACTUS:
-        NavigationService.navigate(Navigation.CONTACTUS);
+        navigation.navigate(Navigation.CONTACTUS);
         break;
       default:
         break;
     }
   }
 
-  renderUser = () => {
-    const { user } = this.props;
+  const renderUser = () => {
+    const { user } = reducer.user;
     return (
       <View style={{ alignItems: 'center', marginVertical: 16 }}>
         <Image
@@ -92,14 +98,8 @@ export class Profile extends React.Component {
     );
   };
 
-  renderGeneral = () => {
-    this.state.listGeneral = [
-      { key: KEYFAQ, title: 'FAQ', image: Images.icHelp },
-      { key: KEYABOUTUS, title: 'About Us', image: Images.icAbout },
-      { key: KEYCONTACTUS, title: 'Contact Us', image: Images.icPhone }
-    ];
-
-    return this.state.listGeneral.map((item, index) => (
+  const renderGeneral = () => (
+    listGeneral.map((item, index) => (
       <View
         style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
         key={item.key}>
@@ -113,7 +113,7 @@ export class Profile extends React.Component {
         />
         <TouchableOpacity
           style={{ flex: 1, justifyContent: 'space-between', marginLeft: 15 }}
-          onPress={() => this.clickGeneral(item.key)}>
+          onPress={() => _onClickGeneral(item.key)}>
           <View style={styles.itemContainer}>
             <Text>
               {item.title}
@@ -126,45 +126,33 @@ export class Profile extends React.Component {
           <View style={styles.lineSeparator} />
         </TouchableOpacity>
       </View>
-    ));
-  };
+    ))
+  );
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <View style={{ flex: 1 }}>
-          <NavBar title="Profile" bgText={Theme.primaryColor} />
-          <ScrollView>
-            {this.renderUser()}
-            <View style={{ marginTop: 12, paddingHorizontal: 20 }}>
-              <Text style={{ fontSize: 16, marginBottom: 8 }}>
-                General
+  return (
+    <View style={styles.container}>
+      <View style={{ flex: 1 }}>
+        <NavBar title="Profile" bgText={Theme.primaryColor} />
+        <ScrollView>
+          {renderUser()}
+          <View style={{ marginTop: 12, paddingHorizontal: 20 }}>
+            <Text style={{ fontSize: 16, marginBottom: 8 }}>
+              General
               </Text>
-              {this.renderGeneral()}
-            </View>
-            <Button
-              title="LOGOUT"
-              style={{ paddingHorizontal: 20 }}
-              onPress={() => {
-                this.props.setUserLogin({})
-                NavigationService.navigate(Navigation.LOGIN);
-              }}
-            />
-          </ScrollView>
-        </View>
+            {renderGeneral()}
+          </View>
+          <Button
+            title="LOGOUT"
+            style={{ paddingHorizontal: 20 }}
+            onPress={() => {
+              _setUserLogin({})
+              navigation.navigate(Navigation.LOGIN);
+            }}
+          />
+        </ScrollView>
       </View>
-    );
-  }
+    </View>
+  );
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user.user,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  setUserLogin: (user) => {
-    dispatch(Actions.setUserLogin(user));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default Profile;
