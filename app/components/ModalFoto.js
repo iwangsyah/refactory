@@ -13,68 +13,60 @@ import Images from '../assets/images';
 
 const { width } = Dimensions.get('window');
 
-export default class ModalFoto extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+function ModalFoto(props) {
+  const { visible, onClose, onSelectedItem } = props;
+  const config = {
+    width: width / 2,
+    height: width / 2,
+    cropping: true
   }
 
-  _onSelectedItem = (type) => {
+  const _onSelectedItem = (type) => {
     if (type == 'gallery') {
-      ImagePicker.openPicker({
-        width: width / 2,
-        height: width / 2,
-        cropping: true
-      }).then(image => {
-        this.props.onSelectedItem(image.path)
-        this.props.onClose()
+      ImagePicker.openPicker(config).then(image => {
+        onSelectedItem(image.path);
+        onClose();
       });
     } else {
-      ImagePicker.openCamera({
-        width: width / 2,
-        height: width / 2,
-        cropping: true
-      }).then(image => {
-        this.props.onSelectedItem(image.path)
-        this.props.onClose()
+      ImagePicker.openCamera(config).then(image => {
+        onSelectedItem(image.path);
+        onClose();
       });
     }
   }
 
-  render() {
-    const { visible, onClose, selecte } = this.props;
-    return (
-      <Modal
-        isVisible={visible}
-        style={ModalBottomStyle.bottomModal}
-        onBackdropPress={() => onClose()}>
-        <View enableOnAndroid style={ModalBottomStyle.modalBox}>
-          <Text style={ModalBottomStyle.title}>
-            Pilihan
-          </Text>
-
-          <View style={{ flexDirection: 'row' }}>
-            <View style={ModalBottomStyle.contentContainer}>
-              <TouchableOpacity
-                style={LoginStyle.iconContainer}
-                onPress={() => this._onSelectedItem('gallery')}
-              >
-                <Image source={Images.icGallery} style={LoginStyle.image} />
-              </TouchableOpacity>
-              <Text>Gallery</Text>
-            </View>
-            <View style={ModalBottomStyle.contentContainer}>
-              <TouchableOpacity
-                style={LoginStyle.iconContainer}
-                onPress={() => this._onSelectedItem('capture')}
-              >
-                <Image source={Images.icCamera} style={LoginStyle.image} />
-              </TouchableOpacity>
-              <Text>Ambil Foto</Text>
-            </View>
+  return (
+    <Modal
+      isVisible={visible}
+      style={ModalBottomStyle.bottomModal}
+      onBackdropPress={() => onClose()}>
+      <View enableOnAndroid style={ModalBottomStyle.modalBox}>
+        <Text style={ModalBottomStyle.title}>
+          Pilihan
+        </Text>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={ModalBottomStyle.contentContainer}>
+            <TouchableOpacity
+              style={LoginStyle.iconContainer}
+              onPress={() => _onSelectedItem('gallery')}
+            >
+              <Image source={Images.icGallery} style={LoginStyle.image} />
+            </TouchableOpacity>
+            <Text>Gallery</Text>
+          </View>
+          <View style={ModalBottomStyle.contentContainer}>
+            <TouchableOpacity
+              style={LoginStyle.iconContainer}
+              onPress={() => _onSelectedItem('capture')}
+            >
+              <Image source={Images.icCamera} style={LoginStyle.image} />
+            </TouchableOpacity>
+            <Text>Ambil Foto</Text>
           </View>
         </View>
-      </Modal>
-    );
-  }
+      </View>
+    </Modal>
+  );
 }
+
+export default ModalFoto;

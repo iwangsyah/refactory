@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Text, Image } from 'react-native';
 import Theme from '../styles/Theme';
 
@@ -28,47 +28,40 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class InputText extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isFocused: false,
-    };
+function InputText(props) {
+  const [isFocused, setIsFocused] = useState(false);
+  const [editable, setEditable] = useState(props.editable);
+  const {
+    style,
+    value,
+    title,
+    onChange,
+    keyboardType,
+    secureTextEntry,
+  } = props;
+
+  const border = {
+    borderWidth: isFocused ? 1 : 0,
+    backgroundColor:
+      editable === false ? Theme.lineColor : 'rgba(255,255,255,1)'
   }
 
-  render() {
-    const {
-      style,
-      value,
-      title,
-      onChange,
-      keyboardType,
-      secureTextEntry,
-    } = this.props;
-    let { editable } = this.props;
-
-    const border = {
-      borderWidth: this.state.isFocused ? 1 : 0,
-      backgroundColor:
-        editable === false ? Theme.lineColor : 'rgba(255,255,255,1)'
-    }
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>{title}</Text>
-        <TextInput
-          onFocus={() => this.setState({ isFocused: true })}
-          onBlur={() => this.setState({ isFocused: false })}
-          style={[styles.textinput, border, style]}
-          onChangeText={(text) => onChange(text)}
-          secureTextEntry={secureTextEntry}
-          keyboardType={keyboardType}
-          returnKeyType="done"
-          editable={editable}
-          value={value}
-        />
-        {/* </View> */}
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>{title}</Text>
+      <TextInput
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        style={[styles.textinput, border, style]}
+        onChangeText={(text) => onChange(text)}
+        secureTextEntry={secureTextEntry}
+        keyboardType={keyboardType}
+        returnKeyType="done"
+        editable={editable}
+        value={value}
+      />
+    </View>
+  );
 }
+
+export default InputText;
