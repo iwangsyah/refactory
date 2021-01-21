@@ -22,7 +22,7 @@ function ModalFoto(props) {
   }
 
   const _onSelectedItem = (type) => {
-    if (type == 'gallery') {
+    if (type == 'Gallery') {
       ImagePicker.openPicker(config).then(image => {
         onSelectedItem(image.path);
         onClose();
@@ -35,6 +35,18 @@ function ModalFoto(props) {
     }
   }
 
+  const _renderButton = (icon, type) => (
+    <View style={ModalBottomStyle.contentContainer}>
+      <TouchableOpacity
+        style={LoginStyle.iconContainer}
+        onPress={() => _onSelectedItem(type)}
+      >
+        <Image source={icon} style={LoginStyle.image} />
+      </TouchableOpacity>
+      <Text>{type}</Text>
+    </View>
+  )
+
   return (
     <Modal
       isVisible={visible}
@@ -45,24 +57,8 @@ function ModalFoto(props) {
           Pilihan
         </Text>
         <View style={{ flexDirection: 'row' }}>
-          <View style={ModalBottomStyle.contentContainer}>
-            <TouchableOpacity
-              style={LoginStyle.iconContainer}
-              onPress={() => _onSelectedItem('gallery')}
-            >
-              <Image source={Images.icGallery} style={LoginStyle.image} />
-            </TouchableOpacity>
-            <Text>Gallery</Text>
-          </View>
-          <View style={ModalBottomStyle.contentContainer}>
-            <TouchableOpacity
-              style={LoginStyle.iconContainer}
-              onPress={() => _onSelectedItem('capture')}
-            >
-              <Image source={Images.icCamera} style={LoginStyle.image} />
-            </TouchableOpacity>
-            <Text>Ambil Foto</Text>
-          </View>
+          {_renderButton(Images.icGallery, 'Gallery')}
+          {_renderButton(Images.icCamera, 'Capture')}
         </View>
       </View>
     </Modal>

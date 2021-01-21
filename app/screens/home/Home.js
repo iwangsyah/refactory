@@ -62,6 +62,23 @@ function Home() {
       })
   }, [])
 
+  const renderHeaderContent = () => (
+    <ImageBackground
+      source={Images.bgHome}
+      style={{ flex: 1, height: 'auto', marginBottom: 8 }}
+    >
+      <Background
+        transparent
+        style={[LoginStyle.container, { padding: 16 }]}
+      >
+        <Text style={styles.title}>Empowering <Text style={{ color: Theme.buttonColor }}>People</Text> Through Programming</Text>
+        <Text style={[CommonStyle.textDescription, styles.description]}>
+          Refactory adalah perusahaan edukasi dan teknologi yang menyediakan layanan lengkap berupa course maupun custom training yang materinya dapat disesuaikan dengan kebutuhan teknologi dan bisnis perusahaan Anda
+              </Text>
+      </Background>
+    </ImageBackground>
+  )
+
   return (
     <View style={{ flex: 1 }}>
       <NavBar />
@@ -72,20 +89,7 @@ function Home() {
         />
       </View>
       <ScrollView>
-        <ImageBackground
-          source={Images.bgHome}
-          style={{ flex: 1, height: 'auto', marginBottom: 8 }}
-        >
-          <Background
-            transparent
-            style={[LoginStyle.container, { padding: 16 }]}
-          >
-            <Text style={styles.title}>Empowering <Text style={{ color: Theme.buttonColor }}>People</Text> Through Programming</Text>
-            <Text style={[CommonStyle.textDescription, styles.description]}>
-              Refactory adalah perusahaan edukasi dan teknologi yang menyediakan layanan lengkap berupa course maupun custom training yang materinya dapat disesuaikan dengan kebutuhan teknologi dan bisnis perusahaan Anda
-              </Text>
-          </Background>
-        </ImageBackground>
+        {renderHeaderContent()}
         <Help />
         <AsSeeOn data={data} />
         <Connects data={connects} />
